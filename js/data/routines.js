@@ -1,0 +1,209 @@
+import { EXERCISES } from './exercises.js';
+
+export const PHASES = [
+  {
+    id: 1,
+    name: 'Fase 1',
+    subtitle: 'Semanas 1-2',
+    title: 'Despertar y Movilidad',
+    desc: 'Ejercicios suaves y regresiones amigables para activar articulaciones sin dolor.',
+    tempoHint: 'Ritmo cómodo y pausado · Descansa unos segundos si lo necesitas'
+  },
+  {
+    id: 2,
+    name: 'Fase 2',
+    subtitle: 'Semanas 3-4',
+    title: 'Control y Estabilidad',
+    desc: 'Mayor rango de movimiento, estabilidad de core y fuerza base progresiva.',
+    tempoHint: 'Controla cada repetición · Pausa breve en el punto clave'
+  },
+  {
+    id: 3,
+    name: 'Fase 3',
+    subtitle: 'Semanas 5-6',
+    title: 'Fuerza Funcional y Elasticidad',
+    desc: 'Transición a flexiones completas, zancadas fluidas y movilidad dinámica.',
+    tempoHint: 'Movimiento fluido y firme · Mantén buena postura hasta el final'
+  },
+  {
+    id: 4,
+    name: 'Fase 4',
+    subtitle: 'Semana 7+',
+    title: 'Flujo Completo de 15 Min',
+    desc: 'Circuito equilibrado de fuerza sostenida y flexibilidad integral cada mañana.',
+    tempoHint: 'Flujo continuo de 15 min · Respiración profunda y energía sostenida'
+  }
+];
+
+export const FOCUSES = [
+  {
+    id: 'A',
+    label: 'Día A',
+    title: 'Cuerpo Completo y Postura',
+    short: 'Cuerpo Completo',
+    desc: 'Despierta todo el cuerpo con énfasis en espalda sana, piernas y empuje suave.'
+  },
+  {
+    id: 'B',
+    label: 'Día B',
+    title: 'Piernas y Cadera',
+    short: 'Piernas y Cadera',
+    desc: 'Fortalece glúteos y piernas mientras liberas rigidez en caderas e isquiotibiales.'
+  },
+  {
+    id: 'C',
+    label: 'Día C',
+    title: 'Tren Superior y Core',
+    short: 'Superior y Core',
+    desc: 'Mejora la fuerza de brazos, hombros y faja abdominal sin sobrecargar el cuello.'
+  },
+  {
+    id: 'D',
+    label: 'Día D',
+    title: 'Movilidad y Recuperación Activa',
+    short: 'Movilidad Activa',
+    desc: 'Flujo restaurador con activación suave para sentirte ligero, flexible y con energía.'
+  }
+];
+
+/**
+ * Genera la rutina EXACTA de 15:00 minutos (900 segundos) para cualquier Fase (1-4) y Enfoque (A-D).
+ *  - Calentamiento: 3 × (45s + 15s) = 180s (3 min)
+ *  - Fuerza y Control: 9 × (45s + 15s) = 540s (9 min)
+ *  - Flexibilidad: 2 × (45s + 15s) + 1 × 60s = 180s (3 min)
+ */
+export function buildDailyRoutine(phaseId, focusId) {
+  const warmupMap = {
+    A: ['shoulder_thoracic', 'march_hip_open', 'cat_cow'],
+    B: ['march_hip_open', 'cat_cow', 'shoulder_thoracic'],
+    C: ['shoulder_thoracic', 'cat_cow', 'march_hip_open'],
+    D: ['cat_cow', 'shoulder_thoracic', 'march_hip_open']
+  };
+
+  const cooldownMap = {
+    A: phaseId >= 2 ? ['hip_hamstring_stretch', 'downdog_cobra', 'child_pose'] : ['hip_hamstring_stretch', 'cat_cow', 'child_pose'],
+    B: ['hip_hamstring_stretch', 'glute_bridge', 'child_pose'],
+    C: phaseId >= 2 ? ['downdog_cobra', 'shoulder_thoracic', 'child_pose'] : ['shoulder_thoracic', 'cat_cow', 'child_pose'],
+    D: phaseId >= 2 ? ['downdog_cobra', 'hip_hamstring_stretch', 'child_pose'] : ['hip_hamstring_stretch', 'cat_cow', 'child_pose']
+  };
+
+  const strengthMatrix = {
+    1: {
+      A: ['half_squat', 'knee_pushup', 'glute_bridge', 'bird_dog', 'half_squat', 'knee_pushup', 'glute_bridge', 'plank_short', 'bird_dog'],
+      B: ['half_squat', 'glute_bridge', 'march_hip_open', 'half_squat', 'glute_bridge', 'bird_dog', 'half_squat', 'glute_bridge', 'plank_short'],
+      C: ['knee_pushup', 'bird_dog', 'plank_short', 'shoulder_thoracic', 'knee_pushup', 'bird_dog', 'plank_short', 'glute_bridge', 'knee_pushup'],
+      D: ['cat_cow', 'glute_bridge', 'bird_dog', 'half_squat', 'shoulder_thoracic', 'plank_short', 'glute_bridge', 'bird_dog', 'hip_hamstring_stretch']
+    },
+    2: {
+      A: ['controlled_squat', 'knee_pushup', 'glute_bridge', 'bird_dog', 'gentle_lunge', 'knee_pushup', 'plank_short', 'superman', 'controlled_squat'],
+      B: ['controlled_squat', 'glute_bridge', 'gentle_lunge', 'bird_dog', 'controlled_squat', 'glute_bridge', 'gentle_lunge', 'superman', 'plank_short'],
+      C: ['knee_pushup', 'plank_short', 'superman', 'bird_dog', 'knee_pushup', 'plank_short', 'superman', 'bird_dog', 'knee_pushup'],
+      D: ['downdog_cobra', 'bird_dog', 'glute_bridge', 'controlled_squat', 'superman', 'hip_hamstring_stretch', 'plank_short', 'downdog_cobra', 'bird_dog']
+    },
+    3: {
+      A: ['controlled_squat', 'full_pushup', 'gentle_lunge', 'plank_shoulder_tap', 'superman', 'controlled_squat', 'full_pushup', 'glute_bridge', 'plank_shoulder_tap'],
+      B: ['controlled_squat', 'gentle_lunge', 'glute_bridge', 'superman', 'controlled_squat', 'gentle_lunge', 'glute_bridge', 'plank_short', 'controlled_squat'],
+      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'bird_dog', 'full_pushup', 'plank_shoulder_tap', 'superman', 'plank_short', 'knee_pushup'],
+      D: ['downdog_cobra', 'gentle_lunge', 'bird_dog', 'superman', 'hip_hamstring_stretch', 'plank_shoulder_tap', 'glute_bridge', 'downdog_cobra', 'controlled_squat']
+    },
+    4: {
+      A: ['controlled_squat', 'full_pushup', 'gentle_lunge', 'plank_shoulder_tap', 'superman', 'downdog_cobra', 'full_pushup', 'controlled_squat', 'plank_shoulder_tap'],
+      B: ['controlled_squat', 'gentle_lunge', 'glute_bridge', 'downdog_cobra', 'controlled_squat', 'gentle_lunge', 'superman', 'plank_shoulder_tap', 'glute_bridge'],
+      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'downdog_cobra', 'full_pushup', 'plank_short', 'bird_dog', 'superman', 'plank_shoulder_tap'],
+      D: ['downdog_cobra', 'controlled_squat', 'bird_dog', 'gentle_lunge', 'superman', 'plank_shoulder_tap', 'hip_hamstring_stretch', 'glute_bridge', 'downdog_cobra']
+    }
+  };
+
+  const warmupIds = warmupMap[focusId] || warmupMap.A;
+  const strengthIds = (strengthMatrix[phaseId] && strengthMatrix[phaseId][focusId]) || strengthMatrix[1].A;
+  const cooldownIds = cooldownMap[focusId] || cooldownMap.A;
+  const phaseInfo = PHASES.find(p => p.id === phaseId) || PHASES[0];
+
+  const blocks = [
+    {
+      id: 'warmup',
+      title: 'Calentamiento y Movilidad',
+      durationMin: 3,
+      badgeClass: 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300',
+      accentColor: 'amber',
+      items: warmupIds.map((exId) => ({
+        exercise: EXERCISES[exId],
+        workSec: 45,
+        restSec: 15,
+        cue: 'Movimientos amplios y suaves, sincronizados con tu respiración.'
+      }))
+    },
+    {
+      id: 'strength',
+      title: 'Fuerza y Control con Peso Corporal',
+      durationMin: 9,
+      badgeClass: 'bg-sage-100 text-sage-800 dark:bg-sage-500/20 dark:text-sage-300',
+      accentColor: 'sage',
+      items: strengthIds.map((exId, idx) => ({
+        exercise: EXERCISES[exId],
+        workSec: 45,
+        restSec: 15,
+        cue: phaseId === 1
+          ? 'Prioriza técnica limpia sobre velocidad; toma aire si lo necesitas.'
+          : phaseId === 2
+            ? 'Controla la bajada en 2 segundos y mantén el abdomen firme.'
+            : idx % 2 === 0
+              ? 'Ritmo constante y firme cuidando la alineación articular.'
+              : phaseInfo.tempoHint
+      }))
+    },
+    {
+      id: 'cooldown',
+      title: 'Flexibilidad y Enfriamiento',
+      durationMin: 3,
+      badgeClass: 'bg-sky-100 text-sky-800 dark:bg-sky-500/20 dark:text-sky-300',
+      accentColor: 'sky',
+      items: cooldownIds.map((exId, idx) => ({
+        exercise: EXERCISES[exId],
+        workSec: idx === cooldownIds.length - 1 ? 60 : 45,
+        restSec: idx === cooldownIds.length - 1 ? 0 : 15,
+        cue: idx === cooldownIds.length - 1
+          ? 'Último minuto: respira lento y suelta toda la tensión para iniciar el día renovado.'
+          : 'Estira sin dolor agudo, exhalando profundo en cada postura.'
+      }))
+    }
+  ];
+
+  const flatSteps = [];
+  let exerciseNumber = 0;
+  blocks.forEach(block => {
+    block.items.forEach(item => {
+      exerciseNumber++;
+      flatSteps.push({
+        type: 'work',
+        blockTitle: block.title,
+        exerciseIndex: exerciseNumber,
+        totalExercises: 15,
+        exercise: item.exercise,
+        duration: item.workSec,
+        cue: item.cue
+      });
+      if (item.restSec > 0) {
+        flatSteps.push({
+          type: 'rest',
+          blockTitle: block.title,
+          exerciseIndex: exerciseNumber,
+          totalExercises: 15,
+          duration: item.restSec
+        });
+      }
+    });
+  });
+
+  for (let i = 0; i < flatSteps.length; i++) {
+    if (flatSteps[i].type === 'rest') {
+      const nextWork = flatSteps[i + 1];
+      flatSteps[i].exercise = nextWork ? nextWork.exercise : flatSteps[i - 1].exercise;
+      flatSteps[i].cue = nextWork ? nextWork.cue : '';
+      flatSteps[i].nextExerciseIndex = nextWork ? nextWork.exerciseIndex : 15;
+      flatSteps[i].nextBlockTitle = nextWork ? nextWork.blockTitle : flatSteps[i].blockTitle;
+    }
+  }
+
+  return { blocks, flatSteps, totalSeconds: 900 };
+}

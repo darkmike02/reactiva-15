@@ -1,0 +1,23 @@
+/* Ajustes finos de usabilidad táctil y scroll para acompañar a Tailwind */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrollbar sutil en listas largas (Biblioteca e Historial) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 113, 108, 0.28);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 113, 108, 0.45);
+}
