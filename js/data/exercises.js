@@ -1,4 +1,4 @@
-// Catálogo completo de ejercicios articulados (16 ejercicios base)
+// Catálogo completo de ejercicios articulados (21 ejercicios)
 export const EXERCISES = {
   shoulder_thoracic: {
     id: 'shoulder_thoracic',
@@ -287,6 +287,98 @@ export const EXERCISES = {
     ],
     mistake: 'Encorvar la espalda tratando de tocar el pie con las manos.',
     easier: 'Apoya las manos en tu muslo o en dos libros altos para mantener el torso cómodo.'
+  },
+
+  // --- BLOQUE DE TOBILLOS Y RODILLAS PARA FÚTBOL ---
+  ankle_dorsiflexion: {
+    id: 'ankle_dorsiflexion',
+    name: 'Dorsiflexión de Tobillo en Media Rodilla',
+    category: 'movilidad',
+    minPhase: 1,
+    muscleLabel: 'Tobillo y Tendón de Aquiles',
+    highlightZone: 'ankles',
+    cycleSec: 4.4,
+    breath: { inhale: [0.55, 1], exhale: [0, 0.55] },
+    goal: 'Desbloquea el rango de flexión del tobillo para cambios de ritmo y para quitar carga a la rodilla.',
+    tips: [
+      'En media rodilla, mantén toda la planta del pie delantero pegada a la colchoneta.',
+      'Empuja suavemente la rodilla hacia adelante pasando la línea de los dedos sin levantar el talón.',
+      'Sostén 1 segundo al frente, regresa lento y cambia de pierna a la mitad del tiempo.'
+    ],
+    mistake: 'Despegar el talón del suelo o dejar que la rodilla se venza hacia adentro.',
+    easier: 'Coloca una toalla bajo la rodilla apoyada y avanza solo hasta sentir estiramiento suave en el gemelo.'
+  },
+  calf_raise: {
+    id: 'calf_raise',
+    name: 'Elevación de Talones Controlada',
+    category: 'fuerza',
+    minPhase: 1,
+    muscleLabel: 'Gemelos, Sóleo y Tobillos',
+    highlightZone: 'ankles',
+    cycleSec: 3.8,
+    breath: { inhale: [0.55, 1], exhale: [0, 0.55] },
+    goal: 'Fortalece pantorrillas, tendón de Aquiles y estabilidad del tobillo para arranques y frenados.',
+    tips: [
+      'De pie con pies paralelos al ancho de caderas, sube en puntillas repartiendo el peso hacia el dedo gordo.',
+      'Haz una pausa firme de 1 segundo arriba manteniendo los tobillos alineados (sin abrirlos hacia afuera).',
+      'Baja los talones en 2 segundos controlados hasta rozar el suelo.'
+    ],
+    mistake: 'Rebotar rápido arriba y abajo o volcar el peso hacia el borde externo del pie.',
+    easier: 'Apoya ligeramente las yemas de los dedos en una pared o silla para concentrarte en el recorrido.'
+  },
+  single_leg_reach: {
+    id: 'single_leg_reach',
+    name: 'Equilibrio a Una Pierna con Alcance',
+    category: 'movilidad',
+    minPhase: 1,
+    muscleLabel: 'Propiocepción de Tobillo y Rodilla',
+    highlightZone: 'knees_ankles',
+    cycleSec: 5.2,
+    breath: { inhale: [0, 0.5], exhale: [0.5, 1] },
+    goal: 'Entrena los reflejos estabilizadores del tobillo y la rodilla para prevenir esguinces en cancha.',
+    tips: [
+      'Apóyate en un solo pie con la rodilla ligeramente flexionada y la mirada en un punto fijo.',
+      'Alarga la pierna libre al frente y luego hacia atrás sin perder la alineación de tu rodilla de apoyo.',
+      'Cambia de pierna a la mitad del intervalo manteniendo el tronco estable.'
+    ],
+    mistake: 'Bloquear la rodilla de apoyo totalmente recta o dejar que se meta hacia adentro.',
+    easier: 'Toca suavemente el suelo con la punta del pie libre en cada alcance o ten una silla cerca.'
+  },
+  lateral_lunge: {
+    id: 'lateral_lunge',
+    name: 'Zancada Lateral Controlada',
+    category: 'fuerza',
+    minPhase: 2,
+    muscleLabel: 'Rodillas, Aductores y Cadera',
+    highlightZone: 'knees',
+    cycleSec: 4.8,
+    breath: { inhale: [0, 0.5], exhale: [0.5, 1] },
+    goal: 'Protege ingles y rodillas en desplazamientos laterales, cortes y fintas de fútbol.',
+    tips: [
+      'Separa los pies más allá del ancho de hombros con puntas mirando al frente.',
+      'Lleva la cadera hacia atrás y hacia un lado doblando esa rodilla mientras la otra pierna queda estirada.',
+      'Empuja firme con toda la planta para volver al centro y alterna al otro lado.'
+    ],
+    mistake: 'Despegar el talón de la pierna flexionada o dejar caer el pecho hacia el suelo.',
+    easier: 'Reduce el ancho del paso y baja solo un cuarto del recorrido manteniendo control.'
+  },
+  eccentric_step_down: {
+    id: 'eccentric_step_down',
+    name: 'Bajada Excéntrica de Rodilla (Frenado)',
+    category: 'fuerza',
+    minPhase: 2,
+    muscleLabel: 'Tendón Rotuliano y Cuádriceps',
+    highlightZone: 'knees_ankles',
+    cycleSec: 4.6,
+    breath: { inhale: [0, 0.65], exhale: [0.65, 1] },
+    goal: 'Fortalece el frenado excéntrico de la rodilla para desacelerar y golpear el balón con seguridad.',
+    tips: [
+      'Sobre una pierna, flexiona lento la rodilla durante 3 segundos llevando el talón contrario a rozar el suelo adelante.',
+      'Asegúrate de que tu rodilla de apoyo apunte siempre hacia el segundo dedo del pie.',
+      'Sube con firmeza sin desplomarte al tocar el suelo; alterna pierna a la mitad del tiempo.'
+    ],
+    mistake: 'Dejar caer todo el peso sobre el pie delantero o meter la rodilla de apoyo hacia adentro.',
+    easier: 'Haz un descenso más corto (un tercio de bajada) y apóyate ligeramente en una pared.'
   }
 };
 

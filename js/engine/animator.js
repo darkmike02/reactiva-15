@@ -86,7 +86,6 @@ export const KinematicEngine = {
     ctx.save();
     ctx.clearRect(0, 0, w, h);
 
-    // Escala manteniendo proporción 160x100 centrada
     const scale = Math.min(w / 160, h / 100);
     const offsetX = (w - 160 * scale) / 2;
     const offsetY = (h - 100 * scale) / 2;
@@ -141,7 +140,6 @@ export const KinematicEngine = {
     ctx.roundRect(30 * sx, (FLOOR_Y - 0.5) * sy, 100 * sx, 1.1 * sy, 0.8 * sx);
     ctx.fill();
 
-    // Sombra debajo de la figura
     const centerX = (pose.pelvis.x + pose.shoulder.x) / 2;
     ctx.fillStyle = colors.shadow;
     ctx.beginPath();
@@ -162,7 +160,7 @@ export const KinematicEngine = {
       ctx.restore();
     }
 
-    const drawLimb = (p1, p2, p3, color, width1, width2) => {
+    const drawLimb = (p1, p2, p3, color, width1, width2, toe = null) => {
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.strokeStyle = color;
@@ -178,10 +176,18 @@ export const KinematicEngine = {
       ctx.lineTo(p3.x * sx, p3.y * sy);
       ctx.stroke();
 
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(p3.x * sx, p3.y * sy, width2 * 0.52 * sx, 0, Math.PI * 2);
-      ctx.fill();
+      if (toe) {
+        ctx.lineWidth = width2 * 0.85 * sx;
+        ctx.beginPath();
+        ctx.moveTo(p3.x * sx, p3.y * sy);
+        ctx.lineTo(toe.x * sx, toe.y * sy);
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(p3.x * sx, p3.y * sy, width2 * 0.52 * sx, 0, Math.PI * 2);
+        ctx.fill();
+      }
     };
 
     const lHip = pose.lHip || pose.pelvis;
@@ -190,10 +196,10 @@ export const KinematicEngine = {
     const rSh = pose.rSh || pose.shoulder;
 
     // 3. Extremidades lejanas
-    drawLimb(lHip, pose.lKnee, pose.lFoot, colors.limbBack, 4.3, 3.5);
+    drawLimb(lHip, pose.lKnee, pose.lFoot, colors.limbBack, 4.3, 3.5, pose.lToe);
     drawLimb(lSh, pose.lElbow, pose.lHand, colors.limbBack, 3.4, 2.8);
 
-    // 4. Destello de zona muscular principal
+    // 4. Destello de zona muscular o articular principal
     drawMuscleHighlight(ctx, pose, exercise.highlightZone, sx, sy, pulse);
 
     // 5. Torso curvo
@@ -226,15 +232,17 @@ export const KinematicEngine = {
     ctx.fill();
 
     // 7. Extremidades cercanas
-    drawLimb(rHip, pose.rKnee, pose.rFoot, colors.limbFront, 4.6, 3.8);
+    drawLimb(rHip, pose.rKnee, pose.rFoot, colors.limbFront, 4.6, 3.8, pose.rToe);
     drawLimb(rSh, pose.rElbow, pose.rHand, colors.limbFront, 3.7, 3.1);
 
-    // 8. Puntos articulares
+    // 8. Puntos articulares (incluye tobillo cuando la pose articula pie)
     const joints = [pose.shoulder, pose.pelvis, pose.rKnee, pose.rElbow];
+    if (pose.rToe) joints.push(pose.rFoot);
     joints.forEach((j, idx) => {
-      ctx.fillStyle = idx < 2 ? colors.accent : colors.joint;
+      const isPrimary = idx < 2 || idx === 4;
+      ctx.fillStyle = isPrimary ? colors.accent : colors.joint;
       ctx.beginPath();
-      ctx.arc(j.x * sx, j.y * sy, (idx < 2 ? 1.8 : 1.3) * sx, 0, Math.PI * 2);
+      ctx.arc(j.x * sx, j.y * sy, (isPrimary ? 1.8 : 1.3) * sx, 0, Math.PI * 2);
       ctx.fill();
     });
 

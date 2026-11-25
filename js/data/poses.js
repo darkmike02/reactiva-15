@@ -66,8 +66,7 @@ function buildSquatPose(wp, factor) {
 }
 
 /**
- * Diccionario extensible de poses por ID de ejercicio.
- * Para añadir ejercicios nuevos (ej. tobillo/rodilla), basta con agregar una entrada aquí.
+ * Diccionario extensible de poses por ID de ejercicio (21 ejercicios).
  */
 export const POSE_BUILDERS = {
   shoulder_thoracic(u) {
@@ -421,6 +420,189 @@ export const POSE_BUILDERS = {
     const lElbow = solveIK(shoulder, lHand, UPPER_ARM, FORE_ARM, 1);
 
     return { pelvis, midSpine, shoulder, head, lKnee, lFoot, rKnee, rFoot, lElbow, lHand, rElbow, rHand };
+  },
+
+  // --- BLOQUE DE TOBILLOS Y RODILLAS PARA FÚTBOL ---
+
+  // 17. DORSIFLEXIÓN DE TOBILLO EN MEDIA RODILLA (talón pegado al suelo, rodilla pasa dedos)
+  ankle_dorsiflexion(u, w, wp) {
+    const t = wp;
+    const lKnee = { x: 64, y: FLOOR_Y - 1 };
+    const lFoot = { x: 49, y: FLOOR_Y - 1 };
+    const lToe = { x: 45, y: FLOOR_Y - 0.6 };
+
+    const backThighAng = lerp(-75, -34, t);
+    const pelvis = fk(lKnee, backThighAng, THIGH);
+    const torsoAng = lerp(-86, -68, t);
+    const midSpine = fk(pelvis, torsoAng, 10.5);
+    const shoulder = fk(pelvis, torsoAng, 20.5);
+    const head = fk(shoulder, torsoAng + 6, 7.6);
+
+    // Pie delantero completamente plano en el suelo (talón no se despega)
+    const rFoot = { x: 83, y: FLOOR_Y - 0.6 };
+    const rToe = { x: 90, y: FLOOR_Y - 0.6 };
+    const rKnee = solveIK(pelvis, rFoot, THIGH, SHIN, -1);
+
+    // Manos guiando suavemente sobre la rodilla delantera
+    const rHand = { x: rKnee.x - 1, y: rKnee.y - 1.4 };
+    const lHand = { x: rKnee.x - 3, y: rKnee.y - 1.4 };
+    const rElbow = solveIK(shoulder, rHand, UPPER_ARM, FORE_ARM, 1);
+    const lElbow = solveIK(shoulder, lHand, UPPER_ARM, FORE_ARM, 1);
+
+    return {
+      pelvis, midSpine, shoulder, head,
+      lKnee, lFoot, lToe, rKnee, rFoot, rToe,
+      lElbow, lHand, rElbow, rHand
+    };
+  },
+
+  // 18. ELEVACIÓN DE TALONES CONTROLADA (puntas fijas, talón sube y baja)
+  calf_raise(u, w, wp) {
+    const t = wp;
+    const rToe = { x: 86, y: FLOOR_Y - 0.5 };
+    const lToe = { x: 84, y: FLOOR_Y - 1.2 };
+
+    const footAng = lerp(180, 228, t);
+    const rFoot = fk(rToe, footAng, 7);
+    const lFoot = fk(lToe, footAng, 7);
+
+    const liftY = rFoot.y - (FLOOR_Y - 0.5);
+    const shiftX = rFoot.x - 79;
+
+    const pelvis = { x: 79 + shiftX * 0.9, y: 52.8 + liftY };
+    const midSpine = { x: pelvis.x + 0.3, y: pelvis.y - 10 };
+    const shoulder = { x: pelvis.x + 0.6, y: pelvis.y - 20 };
+    const head = { x: shoulder.x + 0.5, y: shoulder.y - 8 };
+
+    const rKnee = solveIK(pelvis, rFoot, THIGH, SHIN, -1);
+    const lKnee = solveIK(pelvis, lFoot, THIGH, SHIN, -1);
+
+    const rElbow = fk(shoulder, lerp(92, 76, t), UPPER_ARM);
+    const rHand = fk(rElbow, lerp(108, 35, t), FORE_ARM * 0.85);
+    const lElbow = fk(shoulder, lerp(86, 102, t), UPPER_ARM);
+    const lHand = fk(lElbow, lerp(98, 52, t), FORE_ARM * 0.85);
+
+    return {
+      pelvis, midSpine, shoulder, head,
+      lKnee, lFoot, lToe, rKnee, rFoot, rToe,
+      lElbow, lHand, rElbow, rHand
+    };
+  },
+
+  // 19. EQUILIBRIO A UNA PIERNA CON ALCANCE (propiocepción de tobillo y rodilla)
+  single_leg_reach(u) {
+    const fwd = u < 0.5 ? ease(u < 0.25 ? u * 4 : (0.5 - u) * 4) : 0;
+    const bwd = u >= 0.5 ? ease(u < 0.75 ? (u - 0.5) * 4 : (1 - u) * 4) : 0;
+    const bend = Math.max(fwd, bwd);
+
+    const rFoot = { x: 79, y: FLOOR_Y - 0.5 };
+    const rToe = { x: 86, y: FLOOR_Y - 0.5 };
+
+    const pelvis = { x: lerp(79, 77, bend), y: lerp(53.5, 57.5, bend) };
+    const rKnee = solveIK(pelvis, rFoot, THIGH, SHIN, -1);
+
+    const torsoAng = -90 - fwd * 8 + bwd * 20;
+    const midSpine = fk(pelvis, torsoAng, 10.5);
+    const shoulder = fk(pelvis, torsoAng, 20.5);
+    const head = fk(shoulder, torsoAng + 4, 7.8);
+
+    const lKneeNeutral = fk(pelvis, 84, THIGH);
+    const lFootNeutral = fk(lKneeNeutral, 96, SHIN);
+    const lKneeFwd = fk(pelvis, 44, THIGH);
+    const lFootFwd = fk(lKneeFwd, 50, SHIN);
+    const lKneeBwd = fk(pelvis, 134, THIGH);
+    const lFootBwd = fk(lKneeBwd, 140, SHIN);
+
+    const lKnee = u < 0.5 ? pLerp(lKneeNeutral, lKneeFwd, fwd) : pLerp(lKneeNeutral, lKneeBwd, bwd);
+    const lFoot = u < 0.5 ? pLerp(lFootNeutral, lFootFwd, fwd) : pLerp(lFootNeutral, lFootBwd, bwd);
+    const lToe = fk(lFoot, 18, 6.2);
+
+    const rArmAng = lerp(82, 42, bend);
+    const lArmAng = lerp(96, 128, bend);
+    const rElbow = fk(shoulder, rArmAng, UPPER_ARM);
+    const rHand = fk(rElbow, rArmAng - 20, FORE_ARM);
+    const lElbow = fk(shoulder, lArmAng, UPPER_ARM);
+    const lHand = fk(lElbow, lArmAng + 15, FORE_ARM);
+
+    return {
+      pelvis, midSpine, shoulder, head,
+      lKnee, lFoot, lToe, rKnee, rFoot, rToe,
+      lElbow, lHand, rElbow, rHand
+    };
+  },
+
+  // 20. ZANCADA LATERAL CONTROLADA (vista frontal para cortes y aductores)
+  lateral_lunge(u) {
+    const toR = u < 0.5 ? ease(u < 0.25 ? u * 4 : (0.5 - u) * 4) : 0;
+    const toL = u >= 0.5 ? ease(u < 0.75 ? (u - 0.5) * 4 : (1 - u) * 4) : 0;
+    const side = toR - toL;
+    const depth = Math.abs(side);
+
+    const lFoot = { x: 63, y: FLOOR_Y - 0.6 };
+    const lToe = { x: 59, y: FLOOR_Y - 0.3 };
+    const rFoot = { x: 97, y: FLOOR_Y - 0.6 };
+    const rToe = { x: 101, y: FLOOR_Y - 0.3 };
+
+    const pelvis = { x: 80 + side * 10, y: 56 + depth * 11 };
+    const lHip = { x: pelvis.x - 4, y: pelvis.y };
+    const rHip = { x: pelvis.x + 4, y: pelvis.y };
+
+    const lKnee = solveIK(lHip, lFoot, THIGH, SHIN, toL > 0 ? 0.25 : 0.12);
+    const rKnee = solveIK(rHip, rFoot, THIGH, SHIN, toR > 0 ? -0.25 : -0.12);
+
+    const midSpine = { x: pelvis.x + side * 1.4, y: pelvis.y - 9.5 };
+    const shoulder = { x: pelvis.x + side * 2.2, y: pelvis.y - 18.5 };
+    const head = { x: shoulder.x + side * 0.4, y: shoulder.y - 7.8 };
+
+    const lSh = { x: shoulder.x - 5.2, y: shoulder.y };
+    const rSh = { x: shoulder.x + 5.2, y: shoulder.y };
+
+    const lElbow = { x: lSh.x - 2.5 + depth * 2.5, y: lSh.y + 9 - depth * 2 };
+    const lHand = { x: shoulder.x - 1, y: shoulder.y + 11 - depth * 4 };
+    const rElbow = { x: rSh.x + 2.5 - depth * 2.5, y: rSh.y + 9 - depth * 2 };
+    const rHand = { x: shoulder.x + 1, y: shoulder.y + 11 - depth * 4 };
+
+    return {
+      pelvis, midSpine, shoulder, head, lSh, rSh, lHip, rHip,
+      lKnee, lFoot, lToe, rKnee, rFoot, rToe,
+      lElbow, lHand, rElbow, rHand
+    };
+  },
+
+  // 21. BAJADA EXCÉNTRICA DE RODILLA (frenado lento 3s + subida firme)
+  eccentric_step_down(u) {
+    const ecc = u < 0.65
+      ? ease(u / 0.65)
+      : u < 0.75
+        ? 1
+        : ease(1 - (u - 0.75) / 0.25);
+
+    const rFoot = { x: 75, y: FLOOR_Y - 0.5 };
+    const rToe = { x: 82, y: FLOOR_Y - 0.5 };
+
+    const pelvis = { x: lerp(75, 67, ecc), y: lerp(53, 64.5, ecc) };
+    const rKnee = solveIK(pelvis, rFoot, THIGH, SHIN, -1);
+
+    const torsoAng = lerp(-88, -68, ecc);
+    const midSpine = fk(pelvis, torsoAng, 10.5);
+    const shoulder = fk(pelvis, torsoAng, 20.5);
+    const head = fk(shoulder, torsoAng + 6, 7.8);
+
+    const lFoot = pLerp({ x: 82, y: 79 }, { x: 91, y: FLOOR_Y - 0.5 }, ecc);
+    const lToe = pLerp({ x: 85.5, y: 74.8 }, { x: 94.5, y: FLOOR_Y - 4.8 }, ecc);
+    const lKnee = solveIK(pelvis, lFoot, THIGH, SHIN, -1);
+
+    const armAng = lerp(82, -5, ecc);
+    const rElbow = fk(shoulder, armAng, UPPER_ARM);
+    const rHand = fk(rElbow, armAng - 6, FORE_ARM);
+    const lElbow = fk(shoulder, armAng - 5, UPPER_ARM);
+    const lHand = fk(lElbow, armAng - 10, FORE_ARM);
+
+    return {
+      pelvis, midSpine, shoulder, head,
+      lKnee, lFoot, lToe, rKnee, rFoot, rToe,
+      lElbow, lHand, rElbow, rHand
+    };
   }
 };
 

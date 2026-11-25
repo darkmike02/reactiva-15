@@ -41,14 +41,14 @@ export const FOCUSES = [
     label: 'Día A',
     title: 'Cuerpo Completo y Postura',
     short: 'Cuerpo Completo',
-    desc: 'Despierta todo el cuerpo con énfasis en espalda sana, piernas y empuje suave.'
+    desc: 'Despierta todo el cuerpo con énfasis en espalda sana, piernas, tobillos y empuje suave.'
   },
   {
     id: 'B',
     label: 'Día B',
-    title: 'Piernas y Cadera',
-    short: 'Piernas y Cadera',
-    desc: 'Fortalece glúteos y piernas mientras liberas rigidez en caderas e isquiotibiales.'
+    title: 'Piernas, Rodillas y Tobillos',
+    short: 'Piernas y Tobillos',
+    desc: 'Fortalece piernas, glúteos y estabilidad de rodilla y tobillo para cambios de ritmo y fútbol.'
   },
   {
     id: 'C',
@@ -62,7 +62,7 @@ export const FOCUSES = [
     label: 'Día D',
     title: 'Movilidad y Recuperación Activa',
     short: 'Movilidad Activa',
-    desc: 'Flujo restaurador con activación suave para sentirte ligero, flexible y con energía.'
+    desc: 'Flujo restaurador con propiocepción y descarga articular para sentirte ligero y estable.'
   }
 ];
 
@@ -74,43 +74,43 @@ export const FOCUSES = [
  */
 export function buildDailyRoutine(phaseId, focusId) {
   const warmupMap = {
-    A: ['shoulder_thoracic', 'march_hip_open', 'cat_cow'],
-    B: ['march_hip_open', 'cat_cow', 'shoulder_thoracic'],
+    A: ['shoulder_thoracic', 'ankle_dorsiflexion', 'cat_cow'],
+    B: ['ankle_dorsiflexion', 'march_hip_open', 'cat_cow'],
     C: ['shoulder_thoracic', 'cat_cow', 'march_hip_open'],
-    D: ['cat_cow', 'shoulder_thoracic', 'march_hip_open']
+    D: ['cat_cow', 'ankle_dorsiflexion', 'shoulder_thoracic']
   };
 
   const cooldownMap = {
     A: phaseId >= 2 ? ['hip_hamstring_stretch', 'downdog_cobra', 'child_pose'] : ['hip_hamstring_stretch', 'cat_cow', 'child_pose'],
-    B: ['hip_hamstring_stretch', 'glute_bridge', 'child_pose'],
+    B: ['hip_hamstring_stretch', 'ankle_dorsiflexion', 'child_pose'],
     C: phaseId >= 2 ? ['downdog_cobra', 'shoulder_thoracic', 'child_pose'] : ['shoulder_thoracic', 'cat_cow', 'child_pose'],
     D: phaseId >= 2 ? ['downdog_cobra', 'hip_hamstring_stretch', 'child_pose'] : ['hip_hamstring_stretch', 'cat_cow', 'child_pose']
   };
 
   const strengthMatrix = {
     1: {
-      A: ['half_squat', 'knee_pushup', 'glute_bridge', 'bird_dog', 'half_squat', 'knee_pushup', 'glute_bridge', 'plank_short', 'bird_dog'],
-      B: ['half_squat', 'glute_bridge', 'march_hip_open', 'half_squat', 'glute_bridge', 'bird_dog', 'half_squat', 'glute_bridge', 'plank_short'],
-      C: ['knee_pushup', 'bird_dog', 'plank_short', 'shoulder_thoracic', 'knee_pushup', 'bird_dog', 'plank_short', 'glute_bridge', 'knee_pushup'],
-      D: ['cat_cow', 'glute_bridge', 'bird_dog', 'half_squat', 'shoulder_thoracic', 'plank_short', 'glute_bridge', 'bird_dog', 'hip_hamstring_stretch']
+      A: ['half_squat', 'knee_pushup', 'glute_bridge', 'single_leg_reach', 'calf_raise', 'knee_pushup', 'bird_dog', 'plank_short', 'half_squat'],
+      B: ['half_squat', 'calf_raise', 'glute_bridge', 'single_leg_reach', 'half_squat', 'calf_raise', 'bird_dog', 'glute_bridge', 'plank_short'],
+      C: ['knee_pushup', 'bird_dog', 'plank_short', 'calf_raise', 'knee_pushup', 'bird_dog', 'plank_short', 'glute_bridge', 'knee_pushup'],
+      D: ['cat_cow', 'single_leg_reach', 'glute_bridge', 'half_squat', 'calf_raise', 'plank_short', 'bird_dog', 'single_leg_reach', 'hip_hamstring_stretch']
     },
     2: {
-      A: ['controlled_squat', 'knee_pushup', 'glute_bridge', 'bird_dog', 'gentle_lunge', 'knee_pushup', 'plank_short', 'superman', 'controlled_squat'],
-      B: ['controlled_squat', 'glute_bridge', 'gentle_lunge', 'bird_dog', 'controlled_squat', 'glute_bridge', 'gentle_lunge', 'superman', 'plank_short'],
-      C: ['knee_pushup', 'plank_short', 'superman', 'bird_dog', 'knee_pushup', 'plank_short', 'superman', 'bird_dog', 'knee_pushup'],
-      D: ['downdog_cobra', 'bird_dog', 'glute_bridge', 'controlled_squat', 'superman', 'hip_hamstring_stretch', 'plank_short', 'downdog_cobra', 'bird_dog']
+      A: ['controlled_squat', 'knee_pushup', 'glute_bridge', 'single_leg_reach', 'lateral_lunge', 'knee_pushup', 'calf_raise', 'plank_short', 'superman'],
+      B: ['controlled_squat', 'calf_raise', 'lateral_lunge', 'glute_bridge', 'eccentric_step_down', 'single_leg_reach', 'gentle_lunge', 'calf_raise', 'plank_short'],
+      C: ['knee_pushup', 'plank_short', 'superman', 'bird_dog', 'knee_pushup', 'calf_raise', 'plank_short', 'superman', 'bird_dog'],
+      D: ['downdog_cobra', 'single_leg_reach', 'glute_bridge', 'lateral_lunge', 'superman', 'ankle_dorsiflexion', 'plank_short', 'eccentric_step_down', 'bird_dog']
     },
     3: {
-      A: ['controlled_squat', 'full_pushup', 'gentle_lunge', 'plank_shoulder_tap', 'superman', 'controlled_squat', 'full_pushup', 'glute_bridge', 'plank_shoulder_tap'],
-      B: ['controlled_squat', 'gentle_lunge', 'glute_bridge', 'superman', 'controlled_squat', 'gentle_lunge', 'glute_bridge', 'plank_short', 'controlled_squat'],
-      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'bird_dog', 'full_pushup', 'plank_shoulder_tap', 'superman', 'plank_short', 'knee_pushup'],
-      D: ['downdog_cobra', 'gentle_lunge', 'bird_dog', 'superman', 'hip_hamstring_stretch', 'plank_shoulder_tap', 'glute_bridge', 'downdog_cobra', 'controlled_squat']
+      A: ['controlled_squat', 'full_pushup', 'lateral_lunge', 'plank_shoulder_tap', 'eccentric_step_down', 'calf_raise', 'full_pushup', 'superman', 'plank_shoulder_tap'],
+      B: ['controlled_squat', 'lateral_lunge', 'eccentric_step_down', 'calf_raise', 'gentle_lunge', 'glute_bridge', 'single_leg_reach', 'eccentric_step_down', 'plank_short'],
+      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'single_leg_reach', 'full_pushup', 'plank_shoulder_tap', 'calf_raise', 'plank_short', 'knee_pushup'],
+      D: ['downdog_cobra', 'lateral_lunge', 'single_leg_reach', 'superman', 'ankle_dorsiflexion', 'plank_shoulder_tap', 'eccentric_step_down', 'downdog_cobra', 'calf_raise']
     },
     4: {
-      A: ['controlled_squat', 'full_pushup', 'gentle_lunge', 'plank_shoulder_tap', 'superman', 'downdog_cobra', 'full_pushup', 'controlled_squat', 'plank_shoulder_tap'],
-      B: ['controlled_squat', 'gentle_lunge', 'glute_bridge', 'downdog_cobra', 'controlled_squat', 'gentle_lunge', 'superman', 'plank_shoulder_tap', 'glute_bridge'],
-      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'downdog_cobra', 'full_pushup', 'plank_short', 'bird_dog', 'superman', 'plank_shoulder_tap'],
-      D: ['downdog_cobra', 'controlled_squat', 'bird_dog', 'gentle_lunge', 'superman', 'plank_shoulder_tap', 'hip_hamstring_stretch', 'glute_bridge', 'downdog_cobra']
+      A: ['controlled_squat', 'full_pushup', 'lateral_lunge', 'plank_shoulder_tap', 'eccentric_step_down', 'downdog_cobra', 'full_pushup', 'calf_raise', 'plank_shoulder_tap'],
+      B: ['controlled_squat', 'lateral_lunge', 'eccentric_step_down', 'calf_raise', 'gentle_lunge', 'single_leg_reach', 'superman', 'eccentric_step_down', 'glute_bridge'],
+      C: ['full_pushup', 'plank_shoulder_tap', 'superman', 'downdog_cobra', 'full_pushup', 'plank_short', 'calf_raise', 'single_leg_reach', 'plank_shoulder_tap'],
+      D: ['downdog_cobra', 'lateral_lunge', 'single_leg_reach', 'eccentric_step_down', 'superman', 'plank_shoulder_tap', 'hip_hamstring_stretch', 'calf_raise', 'downdog_cobra']
     }
   };
 
